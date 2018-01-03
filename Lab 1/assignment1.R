@@ -1,13 +1,16 @@
+#### Assignment 1 - Spam classification with k-nearest neighbors
+
 ### Libraries
 library(kknn)
 
 ### Setup
-data = read.csv("spambase.csv", dec=',')
-n = dim(data)[1]
+data.spambase = read.csv("spambase.csv", dec=',')
+n = dim(data.spambase)[1]
 set.seed(12345)
 ids.train = sample(1:n, floor(n/2)) # Sample 50%
-train = data[ids.train,] # Select the 50% to be train data
-test = data[-ids.train,] # The Test data is the remaining data
+train = data.spambase[ids.train,] # Select the 50% to be train data
+test = data.spambase[-ids.train,] # The Test data is the remaining data
+y.test = test[,49]
 
 ### Functions
 
@@ -71,25 +74,25 @@ ROC = function(y, p, prob){
 ## knearest, k=5
 prob.knearest.k5 = knearest(train, test, 5)
 pred.knearest.k5 = pred(prob.knearest.k5, 0.5)
-cm.knearest.k5 = confusion_matrix(test[,49], pred.knearest.k5)
+cm.knearest.k5 = confusion_matrix(y.test, pred.knearest.k5)
 mcr.knearest.k5  = mcr(cm.knearest.k5)
 
 ## knearest, k=1
 prob.knearest.k1 = knearest(train, test, 1)
 pred.knearest.k1 = pred(prob.knearest.k1, 0.5)
-cm.knearest.k1 = confusion_matrix(test[,49], pred.knearest.k1)
+cm.knearest.k1 = confusion_matrix(y.test, pred.knearest.k1)
 mcr.knearest.k1  = mcr(cm.knearest.k1)
 
 ## kknn, k=5
 prob.kknn.k5 = kknn(Spam~., train=train, test=test, k=5)$fitted.values
 pred.kknn.k5 = pred(prob.kknn.k5, 0.5)
-cm.kknn.k5 = confusion_matrix(test[,49], pred.kknn.k5)
+cm.kknn.k5 = confusion_matrix(y.test, pred.kknn.k5)
 mcr.kknn.k5  = mcr(cm.kknn.k5)
 
 ## TPR and FPR
 p.seq = seq(0.05, 0.95, 0.05)
-ROC.knearest = ROC(test[,49], p.seq, prob.knearest.k5)
-ROC.kknn = ROC(test[,49], p.seq, prob.kknn.k5)
+ROC.knearest = ROC(y.test, p.seq, prob.knearest.k5)
+ROC.kknn = ROC(y.test, p.seq, prob.kknn.k5)
 
 ## ROC Curves
 plot(x=ROC.knearest$FPR, y=ROC.knearest$TPR, xlim=c(0,1), ylim=c(0,1), type='b', col="green"
