@@ -52,8 +52,7 @@ mcr = function(cm){
 }
 
 ## TPR and FPR values for ROC Curve
-ROC = function(y, prob){
-  p = seq(0.05, 0.95, 0.05)
+ROC = function(y, p, prob){
   m = length(p)
   TPR = numeric(m)
   FPR = numeric(m)
@@ -88,8 +87,9 @@ cm.kknn.k5 = confusion_matrix(test[,49], pred.kknn.k5)
 mcr.kknn.k5  = mcr(cm.kknn.k5)
 
 ## TPR and FPR
-ROC.knearest = ROC(test[,49], prob.knearest.k5)
-ROC.kknn = ROC(test[,49], prob.kknn.k5)
+p.seq = seq(0.05, 0.95, 0.05)
+ROC.knearest = ROC(test[,49], p.seq, prob.knearest.k5)
+ROC.kknn = ROC(test[,49], p.seq, prob.kknn.k5)
 
 ## ROC Curves
 plot(x=ROC.knearest$FPR, y=ROC.knearest$TPR, xlim=c(0,1), ylim=c(0,1), type='b', col="green"
@@ -97,3 +97,19 @@ plot(x=ROC.knearest$FPR, y=ROC.knearest$TPR, xlim=c(0,1), ylim=c(0,1), type='b',
 lines(x=ROC.kknn$FPR, y=ROC.kknn$TPR, type="b", col="blue")
 legend("topright", legend=c("knearest, k=5", "kknn, k=5"), col=c("green", "blue"), lty=1)
 # Comment: No clear "winner" both are too similar to determine the superior classification
+
+## Specificity
+specificity.knearest = 1-ROC.knearest$FPR
+specificity.kknn = 1-ROC.kknn$FPR
+
+plot(p.seq, specificity.knearest , xlab="p", ylab="Specifity (1-FPR)", main="Specificity", xlim=c(0,1), ylim=c(0,1), type="l", col="blue")
+legend("bottomright", legend=c("knearest, k=5", "kknn, k=5"), col=c("blue", "green"), lty=1)
+lines(p.seq, specificity.kknn, col="green")
+
+## Sensitivity
+sensitivity.knearest = ROC.knearest$TPR
+sensitivity.kknn = ROC.kknn$TPR
+
+plot(p.seq, sensitivity.knearest, xlab="p", ylab="Sensitivity (TPR)", main="Sensitivity", xlim=c(0,1), ylim=c(0,1), type="l", col="blue")
+legend("topright", legend=c("(blue) knearest, k=5", "(green) kknn, k=5"), col=c("blue", "green"), lty=1)
+lines(p.seq, sensitivity.kknn, col="green")
