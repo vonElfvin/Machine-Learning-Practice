@@ -63,8 +63,8 @@ ROC = function(y, p, prob){
     pred1 = pred(prob, p[i])
     cm = confusion_matrix(y, pred1)
     print(cm)
-    TPR[i] = cm[2,2]/sum(cm[2,]) # PREDICTED TRUE / ALL ACTUAL TRUE
-    FPR[i] = cm[1,2]/sum(cm[1,]) # PREDICTED TRUE / ALL ACTUAL FALSE
+    TPR[i] = cm[2,2]/sum(cm[2,]) # PREDICTED TRUE AND IT WAS TRUE / ALL ACTUAL TRUE
+    FPR[i] = cm[1,2]/sum(cm[1,]) # PREDICTED TRUE BUT IT WAS FALSE / ALL ACTUAL FALSE
   }
   return(list(FPR=FPR, TPR=TPR))
 }
