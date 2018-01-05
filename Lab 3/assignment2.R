@@ -26,7 +26,6 @@ m = 10
 threshold = numeric()
 mse.train = numeric()
 mse.valid = numeric()
-
 for(i in 1:m){
   nn = neuralnet(formula=sin~rad, data=train, hidden=c(10), threshold = i/1000, startweights = w.init)
   yfit.train = compute(nn, covariate=train$rad)$net.result
@@ -35,6 +34,7 @@ for(i in 1:m){
   mse.train[i] = mse(y.train, yfit.train)
   mse.valid[i] = mse(y.valid, yfit.valid) 
 }
+
 # Plot the MSEs of the different data sets
 plot(threshold, mse.train, xlim=c(threshold[m], threshold[1]), type="b", col="blue", ylim=c(0, 0.0012),
      main="MSEs vs. Threshold", ylab="MSE")
@@ -54,14 +54,14 @@ yfit.valid = compute(nn, valid$rad)$net.result
 # For All
 plot(data, col="red", ylim=c(-1, 2), main="Predictions All")
 points(pred.all, col="blue")
-legend("topright", legend=c("Predictions (All)", "Actual (All)"), col=c("blue","red"), lty=1)
+legend("topright", legend=c("Predictions (All)", "Observed (All)"), col=c("blue","red"), lty=1)
 
 # For Training
 plot(data, col="red", ylim=c(-1, 2), main="Predictions Training")
 points(train$rad, yfit.train, col="blue")
-legend("topright", legend=c("Predictions (Training)", "Actual (All)"), col=c("blue","red"), lty=1)
+legend("topright", legend=c("Predictions (Training)", "Observed (All)"), col=c("blue","red"), lty=1)
 
 # For validation
 plot(data, col="red", ylim=c(-1, 2), main="Predictions Validation")
 points(valid$rad, yfit.valid, col="green")
-legend("topright", legend=c("Predictions (Validation)", "Actual (All)"), col=c("green","red"), lty=1)
+legend("topright", legend=c("Predictions (Validation)", "Observed (All)"), col=c("green","red"), lty=1)
