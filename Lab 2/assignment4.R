@@ -15,9 +15,9 @@ data$Viscosity = c()
 PCA = prcomp(data)
 # Extract eigenvalues
 λ = PCA$sdev^2
-variation.proportion = λ/sum(λ)
+variation.proportion = λ/sum(λ)*100
 # screeplot(PCA)
-barplot(variation.proportion[1:10], ylim=c(0,1), col="forestgreen", 
+barplot(variation.proportion[1:10], ylim=c(0,100), col="forestgreen", 
         main="Variation explanaition proportions for different eigenvalues", 
         xlab="PCi", ylab="Variation proportion") # The plot shows that 2 PC1 and PC2 should be extracted
 sum(variation.proportion[1:2]) # 99.5957% of the total variance is explained by the first 2 PCs
