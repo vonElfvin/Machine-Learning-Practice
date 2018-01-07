@@ -1,4 +1,4 @@
-#### Assignment 4
+#### Lab 2 - Assignment 4 - Principal Components
 ### Libraries
 library(fastICA)
 library(pls)

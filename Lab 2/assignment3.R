@@ -1,4 +1,4 @@
-#### Assignment 3 - Uncertainty estimation
+#### Lab 2 - Assignment 3 - Uncertainty estimation
 ### Libraries
 library(tree)
 library(boot)

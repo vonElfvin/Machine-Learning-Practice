@@ -1,4 +1,4 @@
-#### Assignment 1 - Kernel Methods
+#### Lab 3 - Assignment 1 - Kernel Methods
 ### Libraries
 library(geosphere)
 

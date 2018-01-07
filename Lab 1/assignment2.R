@@ -1,4 +1,4 @@
-#### Assignment 2 - Inference about lifetime of machines
+#### Lab 1 - Assignment 2 - Inference about lifetime of machines
 
 ### Libraries
 

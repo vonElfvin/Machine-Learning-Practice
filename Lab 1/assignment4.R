@@ -1,4 +1,4 @@
-#### Assignment 4 - Linear regression and regularization
+#### Lab 1 - Assignment 4 - Linear regression and regularization
 
 ### Libraries
 library(MASS)

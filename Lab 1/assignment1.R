@@ -1,4 +1,4 @@
-#### Assignment 1 - Spam classification with k-nearest neighbors
+#### Lab 1 - Assignment 1 - Spam classification with k-nearest neighbors
 
 ### Libraries
 library(kknn)

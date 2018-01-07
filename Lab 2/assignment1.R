@@ -1,4 +1,4 @@
-#### Assignment 1 - LDA and logistic regression
+#### Lab 2 - Assignment 1 - LDA and logistic regression
 ### Setup
 data.crabs = read.csv("australian-crabs.csv")
 data.male = data.crabs[data.crabs$sex=="Male",]

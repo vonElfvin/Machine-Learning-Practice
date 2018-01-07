@@ -1,4 +1,4 @@
-#### Assignment 2 - Neural Networks
+#### Lab 3 - Assignment 2 - Neural Networks
 ### Libraries
 library(neuralnet)
 

@@ -1,4 +1,4 @@
-#### Assignment 2
+#### Exam 2 - Assignment 2
 
 ### Libraries
 library(boot)

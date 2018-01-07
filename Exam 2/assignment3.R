@@ -1,4 +1,4 @@
-#### Assignment 3
+#### Exam 2 - Assignment 3
 ### Libraries
 library(kernlab)
 library(neuralnet)

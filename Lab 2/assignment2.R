@@ -1,4 +1,4 @@
-#### Assignment 4 - Analysis of credit scoring
+#### Lab 2 - Assignment 2 - Analysis of credit scoring
 ### Libraries
 library(tree)
 library(e1071)

@@ -1,4 +1,4 @@
-#### Assignment 1 
+#### Exam 2 - Assignment 1 
 ### Libraries
 library(e1071)
 library(pls)
