@@ -28,23 +28,28 @@ discriminant_function = function(X, S){
 
 ### Implementation
 ## Task 1 - Scatterplot of Carapace Length vs. Read Width with Sex colorized
-plot(data.male$CL, data.male$RW, col="blue", ylim=c(7,20),
+plot(data.male$CL, data.male$RW, col=4, pch=19, ylim=c(7,20),
      main="CL vs. RW", xlab="CL", ylab="RW")
-points(data.female$CL, data.female$RW, col="red")
-legend("topleft", legend=c("Male", "Female"), col=c("blue", "red"), lty=1)
+points(data.female$CL, data.female$RW, col=2, pch=19)
+legend("topleft", legend=c("Male", "Female"), pch=19, col=c("blue", "red"))
 
 ## Task 2
 # Get discriminant boundries for the two classes
-disc.female = discriminant_function(X.male, S)
-# Intercept          RW          CL 
-# -12.5634175   2.5658514  -0.2138144 
-disc.male = discriminant_function(X.female, S)
+disc.female = discriminant_function(X.female, S)
 # Intercept         RW         CL 
 # -22.428769   8.248698  -2.161318
+disc.male = discriminant_function(X.male, S)
+# Intercept          RW          CL 
+# -12.5634175   2.5658514  -0.2138144 
 
 # Calculate boundry
 # Boundry: RW = 1.73 + 0.34CL
 boundry.lda = (disc.male[1]-disc.female[1] + (disc.male[3]-disc.female[3])*X[,2]) / (disc.female[2]-disc.male[2])
+boundry.female = (disc.female[1]+disc.female[3]*X.female[,2])/-disc.female[2]
+boundry.male = (disc.male[1]+disc.male[3]*X.male[,2])/-disc.male[2]
+lines(X[,2], boundry.lda)
+lines(X.female[,2], boundry.female)
+lines(X.male[,2], boundry.male)
 # Intercept        RW        CL 
 # -9.865352  5.682847 -1.947504 
 
