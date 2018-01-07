@@ -41,35 +41,33 @@ disc.female = discriminant_function(X.female, S)
 disc.male = discriminant_function(X.male, S)
 # Intercept          RW          CL 
 # -12.5634175   2.5658514  -0.2138144 
-
 # Calculate boundry
 # Boundry: RW = 1.73 + 0.34CL
 boundry.lda = (disc.male[1]-disc.female[1] + (disc.male[3]-disc.female[3])*X[,2]) / (disc.female[2]-disc.male[2])
-boundry.female = (disc.female[1]+disc.female[3]*X.female[,2])/-disc.female[2]
-boundry.male = (disc.male[1]+disc.male[3]*X.male[,2])/-disc.male[2]
 lines(X[,2], boundry.lda)
-lines(X.female[,2], boundry.female)
-lines(X.male[,2], boundry.male)
 # Intercept        RW        CL 
 # -9.865352  5.682847 -1.947504 
 
 # Make predictions
-disc = c(disc.male[1]-disc.female[1], disc.male[2]-disc.female[2], disc.male[3]-disc.female[3])
+#disc = c(disc.male[1]-disc.female[1], disc.male[2]-disc.female[2], disc.male[3]-disc.female[3])
+disc = disc.male - disc.female
 d = disc[1] + disc[2]*X[,1]+disc[3]*X[,2]
 Yfit=(d>0)
 
 # Plot predictions
-plot(X[,2], X[,1], col=Yfit+1,
+plot(X[,2], X[,1], col=2*Yfit+2, pch=19,
      main="CL vs. RW", xlab="CL", ylab="RW")
 lines(X[,2], boundry.lda)
-legend("topleft", legend=c("Male", "Female"), col=c("black", "red"), lty=1)
+legend("topleft", legend=c("Male", "Female"), col=c(4,2), pch=19)
+#hist(d[where=d<0], col=rgb(1, 0, 0, 0.5), xlim=c(-15, 15))
+#hist(d[where=d>0], col=rgb(0, 0, 1, 0.5), add=T)
 
 ## Task 3 - Plot Original observations with boundry
 plot(data.male$CL, data.male$RW, col="blue", ylim=c(7,20),
      main="CL vs. RW", xlab="CL", ylab="RW")
 points(data.female$CL, data.female$RW, col="red")
 lines(X[,2], boundry.lda)
-legend("topleft", legend=c("Male", "Female"), col=c("blue", "red"), lty=1)
+legend("topleft", legend=c("Male", "Female"), col=c(1, 2), pch=19)
 
 ## Task 4 - Logistic Regression
 # Fit the model

@@ -42,6 +42,10 @@ confusion_matrix = function(y, yfit) {
   return(table(y, yfit, dnn=c("TRUE", "PRED")))
 }
 
+mcr2 = function(y,yfit){
+  return(mean(abs(y-yfit)))
+}
+
 ## Returns the missclassifcationrate
 mcr = function(cm){
   return(1-sum(diag(cm))/sum(cm))
@@ -54,10 +58,10 @@ tree.deviance = tree(formula=good_bad~., data=train, split="deviance")
 tree.gini = tree(formula=good_bad~., data=train, split="gini")
 
 # Plot trees
-# plot(tree.deviance)
-# text(tree.deviance, pretty=0)
-# plot(tree.gini)
-# text(tree.gini, pretty=0)
+plot(tree.deviance)
+text(tree.deviance, pretty=0)
+plot(tree.gini)
+text(tree.gini, pretty=0)
 
 # Make predictions
 yfit.train.deviance = predict(tree.deviance, train, type="class")
@@ -169,3 +173,4 @@ cm.test.naive.loss = confusion_matrix(y.test, yfit.test.naive.loss)
 # Missclassification rates
 mcr.train.naive.loss = mcr(cm.train.naive.loss) # 0.546
 mcr.test.naive.loss = mcr(cm.test.naive.loss) # 0.508
+
