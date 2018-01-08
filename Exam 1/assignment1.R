@@ -4,9 +4,10 @@ library(tree)
 library(glmnet)
 
 ### Setup
-data.crx = read.csv("crx.csv")
-n = dim(data.crx)[1]
 set.seed(12345)
+data.crx = read.csv("crx.csv")
+data.crx$Class = as.factor(data.crx$Class)
+n = dim(data.crx)[1]
 ids = sample(1:n, n*0.8)
 train = data.crx[ids,]
 test = data.crx[-ids,]
@@ -17,7 +18,7 @@ plot_tree = function(tree){
   text(tree, pretty=0)
 }
 # Use the following error function to compute the test error for the LASSO and tree models
-# E =∑i Yi*logp̂i +(1-Y)*log(1− p̂i)
+# E =∑i Yi*logp̂i +(1-Yi)*log(1− p̂i)
 E = function(p, y){
   return(sum(y*log(p)+(1-y)*log(1-p)))
 }
@@ -40,6 +41,7 @@ plot_tree(tree2)
 
 ## Task 2
 # Selected # of leaves by cross validation
+set.seed(12345)
 cv.tree = cv.tree(tree1)
 plot(cv.tree$size, cv.tree$dev, type="b", col="blue",
      main="Cross Validation results, Deviance vs. # leaves")
@@ -62,9 +64,11 @@ lasso = glmnet(x.train, y.train, family="binomial", alpha=1)
 plot(lasso, xvar="lambda", TRUE, main="Lasso Regression")
 
 # Select best number of variables through cross-validation
+set.seed(12345)
 lasso.cv = cv.glmnet(x.train, y.train, family="binomial", alpha=1)
 plot(lasso.cv, xvar="lambda", label=TRUE, main="Cross-Validation LASSO", xlab="LogLambda")
-lambda.min = lasso.cv$lambda.min # "best" lambda = 0, no penalty/regularization #0.008608627
+lambda.min = lasso.cv$lambda.min # "best" lambda = 0, no penalty/regularization #0.00860862
+coef(lasso.cv, s="lambda.min") # 23 variables selected
 # Comment:
 # Selected the binomial family since the output is a factor with two levels with a binary output
 # The best deviance was achieved with the penalty factor lambda = 0.008608627
@@ -77,20 +81,22 @@ lambda.min = lasso.cv$lambda.min # "best" lambda = 0, no penalty/regularization 
 ## Task 4 
 # Make predictions
 # Tree
-p.tree = predict(tree.pruned, test, type="vector") # To get the prediction probabilities
+p.tree = predict(tree1, test, type="vector")[,1]
+p.pruned.tree = predict(tree.pruned, test, type="vector")[,1] # To get the prediction probabilities
 # Lasso
 x.test = model.matrix(~ .-1, test[,-16])
 p.lasso = predict(lasso.cv, x.test, s="lambda.min", type="response") # To get predictions as probabilities
 
 # Calculate E
-y.test = test[,16]
-E.tree = E(p.tree, y.test) # -42.57504
-E.lasso = E(p.lasso, y.test) # -42.15535
+y.test = as.numeric(test[,16])-1
+E.tree = E(p.tree, y.test) # -Inf, since predicts 100% wrong at occasions, overfitted
+E.pruned.tree = E(p.pruned.tree, y.test) # -251.5017054
+E.lasso = E(p.lasso, y.test) # -41.9737668
 # Comment:
-# They both have ~equal performance, thus no model can be determined to be best
+# Lasso outperforms the decision Trees
 # This criterion is sometimes more reasonable to use than missclassification rate since
-# it includes information about how certain the predictions are, where confident eg. p=0.99 -> E=-0.01005034
-# correct predictions are punished less than "lucky" correct predictions eg. p=0.51 -> E = -0.6733446
+# it includes information about how certain the predictions are, where confident eg. p=0.99 -> R=-0.01005034
+# correct predictions are punished less than "lucky" correct predictions eg. p=0.51 -> R = -0.6733446
 # Both make the correct prediction given that class is 1 but the more confident prediction contributes
 # less to the error. 
 # Suitible when you want to know which model is the most confident in its decision making
