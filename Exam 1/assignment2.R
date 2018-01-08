@@ -126,17 +126,26 @@ learning.rate = 1/n.train #^2 # 1/25^2 which is in [1/25, 1/25^2]
 n.iterations = 5000 # number of training attempts
 error.train = numeric()
 error.valid = numeric()
+error = numeric(n.iterations)
 
 for(n in 1:n.iterations){
   # error train
   z.j.train = tanh(w.j%*%x.train+b.j)
   y.k.train = w.k%*%z.j.train+b.k
-  error.train[n] = sum((y.k.train-y.train)^2)/2
+  error.train[n] = 1/2*sum((y.k.train-y.train)^2)
+  
+  # error train, too slow
+  #for(m in 1:nrow(train)) {
+  #  z_j <- tanh(w.j * train[m,]$rad + b.j)
+  #  y_k <- sum(w.k * z_j) + b.k
+  #  error[n] <- error[n] + (y_k - train[m,]$sin)^2
+  #}
+  # error[n] = error[n]/2
   
   # error validation
   z.j.valid = tanh(w.j%*%x.valid+b.j)
   y.k.valid = w.k%*%z.j.valid+b.k
-  error.valid[n] = sum((y.k.valid-y.valid)^2)/2
+  error.valid[n] = 1/2*sum((y.k.valid-y.valid)^2)
   
   cat("n: ", n, "| error.train: ", error.train[n], "| error.valid: ", error.valid[n], "\n")
   flush.console()
@@ -158,7 +167,9 @@ for(n in 1:n.iterations){
   }
 }
 
-plot(error.train[-1], type="l")
+plot(error.valid[-1], type="l", col=3)
+lines(error.train[-1], col=1, type="l")
+#lines(error[-1], type="l", col=5)
 
 plot(x.valid, y.k.valid, col="blue")
 points(x.valid, y.valid, col="red")
