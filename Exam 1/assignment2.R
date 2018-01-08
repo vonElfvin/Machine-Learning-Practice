@@ -40,7 +40,7 @@ select_model = function(..data){
   KERNEL = c("rbfdot", "vanilladot")
   H = c(0.01, 0.05)
   model = list()
-  MSE = numeric()
+  MCR = numeric()
   i = 0
   for(c in C)
     for(kernel in KERNEL){
@@ -49,17 +49,18 @@ select_model = function(..data){
           svm = ksvm(type~., data=data, kpar=list(sigma=h), kernel=kernel, C=c, cross=2)
           i = i+1
           model[[i]] = c(c, kernel, h)
-          MSE[i] = CV(svm, data)
+          MCR[i] = CV(svm, data)
         }
       }else if(kernel=="vanilladot"){
         svm = ksvm(type~., data=data, kernel=kernel, C=c, cross=2)
         i = i+1
         model[[i]] = c(c, kernel)
-        MSE[i] = CV(svm, data)
+        MCR[i] = CV(svm, data)
       }
     }
-  print(MSE)
-  best = model[[which.min(MSE)]]
+  print(model)
+  print(MCR)
+  best = model[[which.min(MCR)]]
   c = as.numeric(best[1])
   kernel = best[2]
   
@@ -75,7 +76,7 @@ select_model = function(..data){
 CV = function(model, data){
   n = dim(data)[1]
   width = floor(n/2)
-  SSE = 0
+  MCS = 0 # missclassified sum, number of missclassified observations
   K = 2
   for (k in 1:K){
     # Select indices
@@ -89,10 +90,10 @@ CV = function(model, data){
     # Calculate Error
     Yfit.k = ifelse(Yfit.k=="spam", 1, 0)
     Y.k = ifelse(data[indices,]$type=="spam", 1, 0)
-    SSE=SSE+sum((Yfit.k-Y.k)^2) # 1 if incorrectly predicted, 0 if correct
+    MCS=MCS+sum(abs(Yfit.k-Y.k)) # 1 if incorrectly predicted, 0 if correct
   }
-  MSE = SSE/n
-  return(MSE)
+  MCR = MCS/n # missclassification rate, sum(missclassified)/n
+  return(MCR)
 }
 
 # import data
