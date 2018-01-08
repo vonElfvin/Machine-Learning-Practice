@@ -4,14 +4,13 @@ library(kernlab)
 library(neuralnet)
 
 ### Setup
-set.seed(1234567890)
 data(spam)
 C = c(1, 10, 50, 100)
-
 ### Functions
 
 ### Implementation
 ## Task 1
+set.seed(1234567890)
 error.cross = numeric()
 i = 1
 for(c in C){
