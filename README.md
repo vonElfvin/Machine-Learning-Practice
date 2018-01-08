@@ -1,2 +1,2 @@
 # Machine-Learning-Practice
-Repository for exam practise in the course TDDE01
+Repository for Machine Learning practice
