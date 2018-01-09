@@ -9,7 +9,6 @@ linear_model=function(..X, ..Y){
 }
 
 CV=function(..X, ..Y, K){
-  
   # Setup
   n = length(..Y)
   p = ncol(..X)
