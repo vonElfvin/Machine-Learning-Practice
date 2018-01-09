@@ -1,4 +1,4 @@
-#### SVM
+#### Custom - SVM
 ### Libraries
 library(kernlab)
 
