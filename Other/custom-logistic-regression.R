@@ -6,7 +6,7 @@ data.iris = as.data.frame(iris)
 ids = data.iris$Species %in% c("virginica", "versicolor")
 y.iris = ifelse(data.iris[ids,]$Species=="virginica", 1, 0)
 X.iris = data.iris[ids,c(1,3)] # Select only Lengths to be able to plot
-X.iris = as.matrix(X.iris / max(X.iris)) # Reslace for faster convergence
+X.iris = as.matrix(X.iris / max(X.iris)) # Rescale for faster convergence
 
 ### Functions
 
@@ -24,6 +24,7 @@ logistic_reg = function(X, y, epochs, learning.rate=5){
   for(i in 1:epochs){
     # Calculate the error: yfit - y, yfit = sigmoid(Xβ)
     residuals = sigmoid(X %*% β.hat) - y
+    #residuals = X %*% β.hat - Y # linear regression
     
     # Calculate the gradient at that point
     delta = (t(X) %*% residuals) / n
