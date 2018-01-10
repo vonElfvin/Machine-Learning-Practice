@@ -47,7 +47,7 @@ plot_band = function(data, e, yfit, ..main){
 glm.poisson = glm(Visitors~Time, data=data.bank, family=poisson(link="log"))
 pred1 = exp(predict(glm.poisson, data.bank))
 # pred = glm.poisson$fitted.values
-plot(data.bank$Time, pred, type="l")
+plot(data.bank$Time, pred1, type="l")
 points(data.bank)
 
 ## Task 2
@@ -65,14 +65,12 @@ visitors = numeric(21)
 data.12.to.13 = data.frame(Time=times, Visitors=visitors)
 n = dim(data.12.to.13)[1]
 set.seed(12345)
-#data.12.to.13 = rng(data.12.to.13, glm.poisson)
+data.12.to.13 = rng(data.12.to.13, glm.poisson)
 
 # Prediuction band 12 to 13
 set.seed(12345)
-n = 61+21
 #data.12.to.13 = rbind(data.bank, data.12.to.13)
 boot2 = boot(data.12.to.13, statistic=stat.pred, R=1000, mle=glm.poisson, ran.gen=rng, sim="parametric")
 e2 = envelope(boot2)
 pred2 = exp(predict(glm.poisson, data.12.to.13))
 plot_band(data.12.to.13, e2, pred2, "Prediction band for Parametic Bootstrap")
-e2$point[,(21+61)] # between 188 and 253 visitors
