@@ -12,7 +12,7 @@ data.bank = read.csv2("bank.csv")
 stat.pred = function(..data){
   model = glm(Visitors~Time, data=..data, family=poisson(link="log"))
   yfit = exp(predict(model, data.12.to.13))
-  # yfit = rnorm(n, yfit, sd(residuals(glm.poisson)))
+  #yfit = rnorm(n, yfit, sd(residuals(glm.poisson)))
   # lambda= mean(yfit) # wrong
   yfit = rpois(n, yfit)
   return(yfit)
@@ -45,7 +45,7 @@ plot_band = function(data, e, yfit, ..main){
 ## Task 1
 
 glm.poisson = glm(Visitors~Time, data=data.bank, family=poisson(link="log"))
-pred1 = exp(predict(glm.poisson, data.bank))
+pred1 = exp(predict(glm.poisson, data=data.bank$Time))
 # pred = glm.poisson$fitted.values
 plot(data.bank$Time, pred1, type="l")
 points(data.bank)
@@ -69,8 +69,11 @@ data.12.to.13 = rng(data.12.to.13, glm.poisson)
 
 # Prediuction band 12 to 13
 set.seed(12345)
+data.12.to.13 = rbind(data.bank, data.12.to.13)
+n = 82
 #data.12.to.13 = rbind(data.bank, data.12.to.13)
 boot2 = boot(data.12.to.13, statistic=stat.pred, R=1000, mle=glm.poisson, ran.gen=rng, sim="parametric")
 e2 = envelope(boot2)
 pred2 = exp(predict(glm.poisson, data.12.to.13))
 plot_band(data.12.to.13, e2, pred2, "Prediction band for Parametic Bootstrap")
+
