@@ -64,7 +64,7 @@ for(n in 1:n.iterations){
     
     ## backward propagation
     # calculate delta
-    d.k = (y.k-y.train[i]) * y.k * (1-y.k)
+    d.k = (y.k-y.train[i]) * y.k^2 * (1-y.k)
     
     # update weigths and biases
     b.k = b.k - learning.rate*d.k
