@@ -58,8 +58,8 @@ for(n in 1:n.iterations){
   y.k.valid = sigmoid(a.k.valid)
   error.valid[n] = mean((y.k.valid-y.valid)^2)
   
-  #cat("n: ", n, "| error.train: ", error.train[n], "| error.valid: ", error.valid[n], "\n")
-  #flush.console()
+  cat("n: ", n, "| error.train: ", error.train[n], "| error.valid: ", error.valid[n], "\n")
+  flush.console()
   
   for(i in 1:n.train){
     # forward propagation
@@ -83,8 +83,8 @@ for(n in 1:n.iterations){
 plot(error.train[-1], type="l", col=1)
 #lines(error[-1], type="l", col=5)
 yfit.train = ifelse(y.k.train>0.5, 1, 0)
-plot(X.train[,1], X.train[,2], col=rgb(y.train,1-y.train,0,0.5), pch=19,
-     xlab="X", ylab="Y")
-points(X.train[,1], X.train[,2], col=rgb(yfit.train,1-yfit.train,0,0.5), pch=3)
+#plot(X.train[,1], X.train[,2], col=rgb(y.train,1-y.train,0,0.5), pch=19,
+#     xlab="X", ylab="Y")
+#points(X.train[,1], X.train[,2], col=rgb(yfit.train,1-yfit.train,0,0.5), pch=3)
 
        
